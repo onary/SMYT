@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+IS_LOCAL_ENV = os.environ.has_key('IS_LOCAL_ENV')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -56,16 +57,36 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'smyt_test',
-        'USER': 'smyt',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+
+
+if IS_LOCAL_ENV:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'smyt_test',
+            'USER': 'smyt',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
+        }
     }
-}
+else:
+    DB_NAME = os.environ.get("DB_NAME", "")
+    DB_USER = os.environ.get("DB_USER", "")
+    DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
+    DB_HOST = os.environ.get("DB_HOST", "")
+    DB_PORT = os.environ.get("DB_PORT", "")
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": DB_NAME,
+            "USER": DB_USER,
+            "PASSWORD": DB_PASSWORD,
+            "HOST": DB_HOST,
+            "PORT": DB_PORT,
+        }
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
