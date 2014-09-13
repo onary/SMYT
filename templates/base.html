@@ -17,10 +17,13 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+
     <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" type="text/css">
 
     <!-- include jQuery -->
-    <script src="{{STATIC_URL}}js/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
@@ -34,5 +37,14 @@
     {% block body %}
 
     {% endblock %}
+
+    <script type="text/javascript">
+        window.XHR_URLS = {
+            switch_data: "{% url 'switch_data' %}"
+        };
+        $.ajaxSetup({beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+            }});
+    </script>
 </body>
 </html>
