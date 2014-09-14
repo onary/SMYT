@@ -1,6 +1,6 @@
 $(function() {
-    $("input").addClass("form-control");
-    $(".base input").addClass("new-data");
+    $("input[id^='id_']").addClass("form-control");
+    $(".base input[id^='id_']").addClass("new-data");
     $('.col-md-3').children('.flag').closest('.col-md-3').children('input').addClass('datepicker');
     $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
 
@@ -17,18 +17,50 @@ $(function() {
         var id = $(this).data().id;
         var field = $(this).data().field;
         var entity = $('#container').data().entity;
-
-        $.post(window.XHR_URLS.switch_data,
-               {'id': id, 'field': field, 'value': input.val(), 'entity': entity},
-               function(data) {
-            if (data.res == "success")
-                anchor.html(data.data);
-        });
-        console.log(id, field, input.val());
+        var value = input.val();
+        if (!!value )
+            $.post(window.XHR_URLS.switch_data,
+                   {'_id': id, 'field': field, 'val': value, '_entity': entity},
+                   function(data) {
+                if (data.res == "success")
+                    anchor.html(value);
+            }, 'json');
 
         anchor.show();
         input.hide();
         $(this).hide();
     });
 
+    var form = $("#new-entity");
+    var error_place = $("#error-place");
+    var buffer = $("#buffer").html();
+    var rows_wrapper = $("#rows-wrapper");
+
+    $(document.body).on('click', '#submit-form', function(e){
+        e.preventDefault();
+        error_place.html('');
+        var data = form.serializeArray();
+        $.post(window.XHR_URLS.switch_data, data, function(d) {
+                if (d.res == "success") {
+                    console.log(d);
+                    console.log($.parseJSON(d.instance));
+                    instance = $.parseJSON(d.instance);
+                    rows_wrapper.append(buffer);
+                    var editable = $("#rows-wrapper .editable");
+                    editable.children('.col-md-1.col-md-offset-2').html(instance.id);
+                    editable.children(".col-md-3").each(function(i) {
+                        var key = $(this).data().key;
+                        $(this).children("a.switch-data").html(instance[key]);
+                        $(this).children("button").attr("data-id", instance.id);
+                        console.log(instance[key]);
+                    });
+                    editable.removeClass('editable');
+                } else {
+                    console.log(d);
+                    error_place.html(d.err);
+                }
+            },
+            "json"
+        );
+    });
 });

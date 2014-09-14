@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% load dynamic_tags %}
-
 {% block body %}
 <div id="container" data-entity="{{ entity }}">
     <nav class="navbar navbar-inverse" role="navigation">
@@ -12,45 +10,5 @@
             {% endfor %}
         </ul>
     </nav>
-    {% for object in objects %}
-        <div class="row base">
-        <div class="col-md-1 col-md-offset-2">{{ object.id }}</div>
-        {% for key, value in object.items|sort %}
-            {% if key != 'id' %}
-                <div class="col-md-3">
-                    {% if object.id != 'ID' %}
-                        <a class="switch-data" href="">{{ value }}</a>
-                        {% with form|getattr:key as field %}
-                            {{ field }}
-                            {% if field|field_type == "DateField" %}<span class="flag"></span>{% endif %}
-                        {% endwith %}
-                        <button type="button"
-                         class="btn btn-warning new-data"
-                         data-id="{{ object.id }}"
-                         data-field="{{ key }}">Apply</button>
-                    {% else %}
-                        {{ value }}
-                    {% endif %}
-                 </div>
-            {% endif %}
-        {% endfor %}
-        </div>
-    {% endfor %}
-
-    {% with objects|getattr:1 as obj %}
-        <div class="row">
-            <div class="col-md-1 col-md-offset-2">new</div>
-            {% for key, value in obj.items|sort %}
-                {% if key != 'id' %}
-                    <div class="col-md-3">
-                        {% with form|getattr:key as field %}
-                            {{ field }}
-                            {% if field|field_type == "DateField" %}<span class="flag"></span>{% endif %}
-                        {% endwith %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endwith %}
 </div>
 {% endblock %}

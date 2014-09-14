@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% load dynamic_tags %}
+
+{% block body %}
+<div id="container" data-entity="{{ entity }}">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'index' %}">Home</a></li>
+        </ul>
+    </nav>
+    <div id="rows-wrapper">
+    {% for object in objects %}
+        <div class="row base">
+            <div class="col-md-1 col-md-offset-2">
+                {{ object.id }}
+            </div>
+            {% for key, value in object.items|sort %}
+                {% if key != 'id' %}
+                    <div class="col-md-3">
+                        {% if object.id != 'ID' %}
+                            <a class="switch-data" href="">{{ value }}</a>
+                            {% with form|getattr:key as field %}
+                                {{ field }}
+                                {% if field|field_type == "DateField" %}
+                                    <span class="flag"></span>
+                                {% endif %}
+                            {% endwith %}
+                            <button type="button"
+                             class="btn btn-warning new-data"
+                             data-id="{{ object.id }}"
+                             data-field="{{ key }}">Apply</button>
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
+                     </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+    <div id="error-place">
+    </div>
+    {% with objects|getattr:0 as obj %}
+        <div class="row">
+            <div class="col-md-1 col-md-offset-1">
+                <button type="button" id="submit-form"
+                    class="btn btn-warning">Sumbit</button>
+            </div>
+            <div class="col-md-1">new</div>
+            <form id="new-entity">
+                {% for key, value in obj.items|sort %}
+                    {% if key != 'id' %}
+                        <div class="col-md-3">
+                            {% with form|getattr:key as field %}
+                                {{ field }}
+                                {% if field|field_type == "DateField" %}
+                                    <span class="flag"></span>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <input type="hidden" name="_entity" value="{{ entity }}" />
+            </form>
+        </div>
+
+        <div id="buffer">
+            <div class="row base editable">
+                <div class="col-md-1 col-md-offset-2"></div>
+                {% for key, value in obj.items|sort %}
+                    {% if key != 'id' %}
+                        <div class="col-md-3" data-key="{{ key }}">
+                            <a class="switch-data" href=""></a>
+                            {% with form|getattr:key as field %}
+                                {{ field }}
+                                {% if field|field_type == "DateField" %}
+                                    <span class="flag"></span>
+                                {% endif %}
+                            {% endwith %}
+                            <button type="button"
+                             class="btn btn-warning new-data"
+                             data-field="{{ key }}">Apply</button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endwith %}
+</div>
+{% endblock %}
