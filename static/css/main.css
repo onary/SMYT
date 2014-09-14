@@ -24,3 +24,9 @@ input, .new-data {
 .errorlist {
     color: red;
 }
+
+div.lynk-block {
+    display: block;
+    min-height: 25px;
+    overflow: hidden;
+}

@@ -29,7 +29,7 @@ $(function() {
                    {'_id': id, 'field': field, 'val': value, '_entity': entity},
                    function(data) {
                 if (data.res == "success")
-                    anchor.html(value);
+                    anchor.children(".lynk-block").html(value);
             }, 'json');
 
         anchor.show();
@@ -54,7 +54,7 @@ $(function() {
                     editable.children('.col-md-1.col-md-offset-2').html(instance.id);
                     editable.children(".col-md-3").each(function(i) {
                         var key = $(this).data().key;
-                        $(this).children("a.switch-data").html(instance[key]);
+                        $(this).children("a.switch-data").children(".lynk-block").html(instance[key]);
                         $(this).children("button").attr("data-id", instance.id);
                         $(this).children(".datepicker").datepicker({format: "yyyy-mm-dd"});
                     });

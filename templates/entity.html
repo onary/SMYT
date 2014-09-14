@@ -24,7 +24,9 @@
                 {% if key != 'id' %}
                     <div class="col-md-3">
                         {% if object.id != 'ID' %}
-                            <a class="switch-data" href="">{{ value }}</a>
+                            <a class="switch-data" href="">
+                                <div class="lynk-block">{{ value }}</div>
+                            </a>
                             {% with form|getattr:key as field %}
                                 {{ field }}
                                 {% if field|field_type == "DateField" %}
@@ -75,7 +77,7 @@
                 {% for key, value in obj.items|sort %}
                     {% if key != 'id' %}
                         <div class="col-md-3" data-key="{{ key }}">
-                            <a class="switch-data" href=""></a>
+                            <a class="switch-data" href=""><div class="lynk-block"></div></a>
                             {% with form|getattr:key as field %}
                                 {{ field }}
                                 {% if field|field_type == "DateField" %}
