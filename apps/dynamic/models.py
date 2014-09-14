@@ -31,9 +31,11 @@ class DynamicModel(object):
 
     def to_field(self, tfield, verbose_name):
         if tfield == 'int':
-            field = models.IntegerField(verbose_name=verbose_name)
+            field = models.IntegerField(verbose_name=verbose_name, default=0)
         if tfield == 'char':
-            field = models.CharField(max_length=256, verbose_name=verbose_name)
+            field = models.CharField(max_length=256,
+                                     verbose_name=verbose_name,
+                                     blank=True)
         if tfield == 'date':
             field = models.DateField(verbose_name=verbose_name,
                                          default=date.today)

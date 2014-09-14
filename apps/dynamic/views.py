@@ -11,13 +11,10 @@ from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
 
 from .forms import create_form
-from .utils import UPOST
+from .utils import UPOST, get_models_names
 
 def index(request):
-    models = []
-    with open(os.path.join(settings.BASE_DIR, 'data.yaml'), 'r') as data:
-        models = yaml.load(data).keys()
-    model = get_model('dynamic', 'users')
+    models = get_models_names()
     return render(request, 'index.html',
                   {'models': models})
 
