@@ -1,8 +1,14 @@
 $(function() {
     $("input[id^='id_']").addClass("form-control");
     $(".base input[id^='id_']").addClass("new-data");
-    $('.col-md-3').children('.flag').closest('.col-md-3').children('input').addClass('datepicker');
-    $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+
+    $('.col-md-3').children('.flag').closest('.col-md-3')
+        .children('input').addClass('datepicker');
+
+    $(window).load(function(){
+        $(".datepicker").datepicker({format: "yyyy-mm-dd"});
+    });
+
 
     $(document.body).on('click', 'a.switch-data', function(e){
         e.preventDefault();
@@ -42,8 +48,6 @@ $(function() {
         var data = form.serializeArray();
         $.post(window.XHR_URLS.switch_data, data, function(d) {
                 if (d.res == "success") {
-                    console.log(d);
-                    console.log($.parseJSON(d.instance));
                     instance = $.parseJSON(d.instance);
                     rows_wrapper.append(buffer);
                     var editable = $("#rows-wrapper .editable");
@@ -52,11 +56,11 @@ $(function() {
                         var key = $(this).data().key;
                         $(this).children("a.switch-data").html(instance[key]);
                         $(this).children("button").attr("data-id", instance.id);
-                        console.log(instance[key]);
+                        $(this).children(".datepicker").datepicker({format: "yyyy-mm-dd"});
                     });
+
                     editable.removeClass('editable');
                 } else {
-                    console.log(d);
                     error_place.html(d.err);
                 }
             },

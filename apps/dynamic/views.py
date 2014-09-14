@@ -64,7 +64,6 @@ def switch_data(request):
             for k, v in model_to_dict(instance, fields=fields).iteritems():
                 data += '"%s":"%s",' % (k, v)
             data = data[:-1] + '}'
-
             return {'res': 'success', 'instance': data}
         else:
             return {'res': 'fail', 'err': str(form.errors)}
